@@ -29,9 +29,17 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
-                    <finalName>app</finalName>
                     <mainClass>com.bigarson.ConfigServerApplication</mainClass>
+                    <layout>JAR</layout>
+                    <finalName>app</finalName>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
