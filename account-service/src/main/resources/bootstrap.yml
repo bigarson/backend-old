@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: account-service
+  cloud:
+    config:
+      profile: dev
+      username: bigarson
+      password: SfFatyBpfnmVSfW!
+
+#      uri: http://config-server:8888
+server:
+  ssl:
+    key-store: classpath:/bigarson.jks
+    key-password: SfFatyBpfnmVSfW!
+    key-alias: bigarson
+grpc:
+  server:
+    security:
+      key-store: classpath:/bigarson.jks
+      key-store-password: SfFatyBpfnmVSfW!

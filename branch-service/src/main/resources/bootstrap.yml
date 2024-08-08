@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: branch-service
+  cloud:
+    config:
+      profile: dev
+
+
+#      uri: http://config-server:8888

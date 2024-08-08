@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package com.bigarson;
+option java_multiple_files=true;
+
+message AccountResponse {
+  bool isSuccess = 1;
+  string message = 2;
+  string id = 3;
+  string userId = 4;
+  bool isActive = 5;
+}
+
+
+message CreateAccountRequest {
+  string userId = 1;
+}
+
+message GetAccountRequest {
+  string userId = 1;
+}
+
+message ChangeAccountStatusRequest {
+  string userId = 1;
+}
+
+service AccountService {
+
+  rpc createAccount(CreateAccountRequest) returns (AccountResponse);
+  rpc setAccountDisable(ChangeAccountStatusRequest) returns(AccountResponse);
+  rpc setAccountEnable(ChangeAccountStatusRequest) returns(AccountResponse);
+  rpc getAccount(GetAccountRequest) returns(AccountResponse);
+
+}

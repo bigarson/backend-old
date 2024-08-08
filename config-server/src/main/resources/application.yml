@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri:  ${GIT_URL:https://github.com/bigarson/env.git}
+          ignore-local-ssh-settings: true
+          username: _
+          password: ${GIT_PASSWORD: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}
+          default-label: master
+  application:
+    name: config-server
+
+  security:
+    user:
+      name: bigarson
+      password: SfFatyBpfnmVSfW!
+
+server:
+  port: 8888
