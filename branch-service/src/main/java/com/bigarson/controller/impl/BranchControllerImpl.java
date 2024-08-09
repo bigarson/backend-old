@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,20 +22,20 @@ public class BranchControllerImpl implements BranchController {
     private final BranchService branchService;
 
     @Override
-    public ResponseEntity<BaseResponse<BranchDTO>> createBranch(BranchDTO branch) {
-        BranchDTO branchDTO = branchService.create(branch);
+    public ResponseEntity<BaseResponse<BranchDTO>> createBranch(Principal principal, BranchDTO branch) {
+        BranchDTO branchDTO = branchService.create(principal,branch);
         return BaseResponse.ok(branchDTO,HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BranchDTO>> updateBranch(BranchUpdateDTO branch) {
-        BranchDTO branchDTO = branchService.update(branch);
+    public ResponseEntity<BaseResponse<BranchDTO>> updateBranch(Principal principal, BranchUpdateDTO branch) {
+        BranchDTO branchDTO = branchService.update(principal,branch);
         return BaseResponse.ok(branchDTO,HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<?>> deleteByBranchId(UUID id) {
-        branchService.delete(id);
+    public ResponseEntity<BaseResponse<?>> deleteByBranchId(Principal principal, UUID id) {
+        branchService.delete(principal,id);
         return BaseResponse.ok(HttpStatus.OK);
     }
 
@@ -45,8 +46,8 @@ public class BranchControllerImpl implements BranchController {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<List<BranchDTO>>> getAllBranchList() {
-        List<BranchDTO> brancList = branchService.getBranchList();
+    public ResponseEntity<BaseResponse<List<BranchDTO>>> getAllBranchList(Principal principal) {
+        List<BranchDTO> brancList = branchService.getBranchList(principal);
         return BaseResponse.ok(brancList,HttpStatus.OK);
     }
 }

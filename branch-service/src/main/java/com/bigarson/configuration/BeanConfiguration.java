@@ -1,20 +1,18 @@
 package com.bigarson.configuration;
 
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import io.minio.MinioClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanConfiguration {
 
-
     @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper;
+    public MinioClient s3Client() {
+        return MinioClient.builder()
+                .endpoint("https://s3.bigarson.com")
+                .credentials("bigarson", "12345678")
+                .build();
     }
-
 }

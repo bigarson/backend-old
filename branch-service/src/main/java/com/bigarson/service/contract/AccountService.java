@@ -9,10 +9,4 @@ public interface AccountService {
 
     AccountDTO getAccountByUserId(UUID userId);
 
-    AccountDTO createAccount(UUID userId);
-
-    void setAccountDisable(UUID userId);
-
-    void setAccountEnable(UUID userId);
-
 }

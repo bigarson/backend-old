@@ -6,8 +6,10 @@ import com.bigarson.model.dto.BranchUpdateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,18 +21,21 @@ public interface BranchController {
             summary = "Şube ekleme",
             description = "Bu da açıklama!!"
     )
-    ResponseEntity<BaseResponse<BranchDTO>> createBranch(@Valid @RequestBody BranchDTO branch);
+    ResponseEntity<BaseResponse<BranchDTO>> createBranch(@AuthenticationPrincipal Principal principal,
+                                                         @Valid @RequestBody BranchDTO branch);
 
     @PutMapping
-    ResponseEntity<BaseResponse<BranchDTO>> updateBranch(@Valid @RequestBody BranchUpdateDTO branch);
+    ResponseEntity<BaseResponse<BranchDTO>> updateBranch(@AuthenticationPrincipal Principal principal,
+                                                         @Valid @RequestBody BranchUpdateDTO branch);
 
     @DeleteMapping("/{id}")
-    ResponseEntity<BaseResponse<?>> deleteByBranchId(@Valid @PathVariable("id") UUID id);
+    ResponseEntity<BaseResponse<?>> deleteByBranchId(@AuthenticationPrincipal Principal principal,
+                                                     @Valid @PathVariable("id") UUID id);
 
     @GetMapping("/{id}")
     ResponseEntity<BaseResponse<BranchDTO>> getByBranchId(@Valid @PathVariable("id") UUID id);
 
     @GetMapping("/list")
-    ResponseEntity<BaseResponse<List<BranchDTO>>> getAllBranchList();
+    ResponseEntity<BaseResponse<List<BranchDTO>>> getAllBranchList(@AuthenticationPrincipal Principal principal);
 
 }

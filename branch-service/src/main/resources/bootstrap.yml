@@ -4,6 +4,6 @@ spring:
   cloud:
     config:
       profile: dev
-
-
+      username: bigarson
+      password: SfFatyBpfnmVSfW!
 #      uri: http://config-server:8888

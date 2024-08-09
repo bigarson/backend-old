@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -26,4 +27,5 @@ public class BranchDTO {
     @NotBlank(message = "{exception.notnull.name}")
     private String contactPhone;
     private WorkingTimeDTO workingTime;
+    private MultipartFile branchImage;
 }
