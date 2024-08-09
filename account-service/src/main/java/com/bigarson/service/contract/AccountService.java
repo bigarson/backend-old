@@ -9,4 +9,5 @@ public interface AccountService {
     AccountDTO getAccountByUserId(UUID userId);
     void setAccountDisable(UUID userId);
     void setAccountEnable(UUID userId);
+
 }

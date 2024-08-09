@@ -1,12 +1,14 @@
 package com.bigarson.service.impl;
 
-import com.bigarson.helper.SecurityUtils;
 import com.bigarson.model.dto.AccountDTO;
 import com.bigarson.model.entity.Account;
 import com.bigarson.model.exception.AccountAlreadyExist;
 import com.bigarson.model.exception.AccountNotFound;
 import com.bigarson.repository.AccountRepository;
+import com.bigarson.repository.SubscriptionRepository;
 import com.bigarson.service.contract.AccountService;
+import com.bigarson.service.contract.PlanService;
+import com.bigarson.service.contract.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import java.util.UUID;
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
+    private final PlanService planService;
+    private final SubscriptionService subscriptionService;
+    private final SubscriptionRepository subscriptionRepository;
 
     @Override
     public AccountDTO createAccount(UUID userId) {
@@ -37,8 +42,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-
-
     @Override
     public void setAccountDisable(UUID userId) {
         Account account = accountRepository.findByUserId(userId).orElseThrow(AccountNotFound::new);
@@ -52,4 +55,6 @@ public class AccountServiceImpl implements AccountService {
         account.setActive(true);
         accountRepository.save(account);
     }
+
+
 }

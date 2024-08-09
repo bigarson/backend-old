@@ -5,8 +5,9 @@ import com.bigarson.model.dto.AccountDTO;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
@@ -20,7 +21,6 @@ public interface AccountController {
     @GetMapping()
     @RolesAllowed({"MANAGER"})
     ResponseEntity<BaseResponse<AccountDTO>> getAccount(@AuthenticationPrincipal Principal principal);
-
 
 
 }
