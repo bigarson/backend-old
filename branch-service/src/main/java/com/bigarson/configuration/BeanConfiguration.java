@@ -12,7 +12,7 @@ public class BeanConfiguration {
     public MinioClient s3Client() {
         return MinioClient.builder()
                 .endpoint("https://s3.bigarson.com")
-                .credentials("bigarson", "12345678")
+                .credentials("7RDC2vfGsxikPjOwQYsv", "W0gTWeVYGn0fqm4tkHZPbb40Dn33LeBBgfg1aAZd")
                 .build();
     }
 }
