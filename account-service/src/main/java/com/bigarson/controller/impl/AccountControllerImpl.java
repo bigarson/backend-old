@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @Slf4j
@@ -21,14 +21,14 @@ public class AccountControllerImpl implements AccountController {
 
 
     @Override
-    public ResponseEntity<BaseResponse<AccountDTO>> createAccount(Principal principal) {
-        AccountDTO response = accountService.createAccount(UUID.fromString(principal.getName()));
+    public ResponseEntity<BaseResponse<AccountDTO>> createAccount(Jwt principal) {
+        AccountDTO response = accountService.createAccount(UUID.fromString(principal.getId()));
         return BaseResponse.ok(response, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<AccountDTO>> getAccount(Principal principal) {
-        AccountDTO response = accountService.getAccountByUserId(UUID.fromString(principal.getName()));
+    public ResponseEntity<BaseResponse<AccountDTO>> getAccount(Jwt principal) {
+        AccountDTO response = accountService.getAccountByUserId(UUID.fromString(principal.getId()));
         return BaseResponse.ok(response, HttpStatus.OK);
     }
 
