@@ -17,18 +17,18 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class AccountControllerImpl implements AccountController {
-    private final AccountService accountService;
 
+    private final AccountService accountService;
 
     @Override
     public ResponseEntity<BaseResponse<AccountDTO>> createAccount(Jwt principal) {
-        AccountDTO response = accountService.createAccount(UUID.fromString(principal.getId()));
+        AccountDTO response = accountService.createAccount(UUID.fromString(principal.getSubject()));
         return BaseResponse.ok(response, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<BaseResponse<AccountDTO>> getAccount(Jwt principal) {
-        AccountDTO response = accountService.getAccountByUserId(UUID.fromString(principal.getId()));
+        AccountDTO response = accountService.getAccountByUserId(UUID.fromString(principal.getSubject()));
         return BaseResponse.ok(response, HttpStatus.OK);
     }
 

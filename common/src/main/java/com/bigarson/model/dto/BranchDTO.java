@@ -27,5 +27,7 @@ public class BranchDTO {
     @NotBlank(message = "{exception.notnull.name}")
     private String contactPhone;
     private WorkingTimeDTO workingTime;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MultipartFile branchImage;
+    private String imageUrl;
 }

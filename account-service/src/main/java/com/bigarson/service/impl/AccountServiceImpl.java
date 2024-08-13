@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,19 +27,23 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO createAccount(UUID userId) {
-        if (accountRepository.findByUserId(userId).isPresent()) {
-            throw new AccountAlreadyExist();
+        Optional<Account> account = accountRepository.findByUserId(userId);
+        if (account.isPresent()) {
+            return modelMapper.map(account.get(), AccountDTO.class);
         }
-        Account account = new Account();
-        account.setUserId(userId);
-        account = accountRepository.save(account);
-        return modelMapper.map(account, AccountDTO.class);
+        Account newAccount = new Account();
+        newAccount.setUserId(userId);
+        newAccount = accountRepository.save(newAccount);
+        return modelMapper.map(newAccount, AccountDTO.class);
     }
 
     @Override
     public AccountDTO getAccountByUserId(UUID userId) {
-        Account account = accountRepository.findByUserId(userId).orElseThrow(AccountNotFound::new);
-        return modelMapper.map(account, AccountDTO.class);
+        Optional<Account> account = accountRepository.findByUserId(userId);
+        if (account.isEmpty()) {
+           return createAccount(userId);
+        }
+        return modelMapper.map(account.get(), AccountDTO.class);
     }
 
 

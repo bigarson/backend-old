@@ -30,5 +30,5 @@ public class Branch extends BaseEntity {
     @Column(name = "account_id",nullable = false)
     private UUID accountId;
     @Column(name = "image_url")
-    private UUID imageUrl;
+    private String imageUrl;
 }
