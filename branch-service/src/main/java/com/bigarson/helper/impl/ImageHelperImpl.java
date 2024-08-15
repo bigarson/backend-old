@@ -1,10 +1,7 @@
 package com.bigarson.helper.impl;
 
 import com.bigarson.helper.contract.ImageHelper;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,10 +16,27 @@ public class ImageHelperImpl implements ImageHelper {
 
     @Override
     public String upload(MultipartFile image, UUID bucketName) {
+
         try {
             boolean bucketExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName.toString()).build());
             if (!bucketExist) {
+                String policy = "{\n" +
+                        "  \"Version\": \"2012-10-17\",\n" +
+                        "  \"Statement\": [\n" +
+                        "    {\n" +
+                        "      \"Effect\": \"Allow\",\n" +
+                        "      \"Principal\": \"*\",\n" +
+                        "      \"Action\": [\n" +
+                        "        \"s3:GetObject\"\n" +
+                        "      ],\n" +
+                        "      \"Resource\": [\n" +
+                        "        \"arn:aws:s3:::" + bucketName + "/*\"\n" +
+                        "      ]\n" +
+                        "    }\n" +
+                        "  ]\n" +
+                        "}";
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName.toString()).build());
+                minioClient.setBucketPolicy(SetBucketPolicyArgs.builder().bucket(bucketName.toString()).config(policy).build());
             }
             String filename = UUID.randomUUID().toString();
             minioClient.putObject(PutObjectArgs.builder()
