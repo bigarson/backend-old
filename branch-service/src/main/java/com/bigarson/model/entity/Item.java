@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -18,9 +18,9 @@ public class Item extends BaseEntity {
     private BigDecimal price;
     @Column
     private String imageUrl;
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id",insertable = false, updatable = false)
     private Category category;
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Portion> portion;
+    @Column(nullable = false,unique = true,name = "category_id")
+    private UUID categoryId;
 }

@@ -1,13 +1,11 @@
 package com.bigarson.model.entity;
 
 import com.bigarson.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,7 +14,9 @@ public class Portion extends BaseEntity {
     private String name;
     @Column(nullable = false,precision = 10,scale = 2)
     private BigDecimal price;
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id",insertable = false, updatable = false)
     private Item item;
+    @Column(nullable = false,unique = true,name = "item_id")
+    private UUID itemId;
 }
