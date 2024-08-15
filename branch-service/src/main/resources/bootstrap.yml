@@ -6,4 +6,7 @@ spring:
       profile: dev
       username: bigarson
       password: SfFatyBpfnmVSfW!
+  servlet:
+    multipart:
+      max-file-size: 20MB
 #      uri: http://config-server:8888
