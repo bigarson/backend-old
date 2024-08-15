@@ -15,14 +15,14 @@ public interface WorkingTimeController {
     @PostMapping("/{branchId}")
     ResponseEntity<BaseResponse<WorkingTimeDTO>> createWorkingTime(@AuthenticationPrincipal Jwt principal,
                                                                    @RequestBody WorkingTimeDTO workingTimeDTO,
-                                                                   @PathVariable UUID branchId);
+                                                                   @PathVariable(name = "branchId") UUID branchId);
 
     @GetMapping("/{branchId}")
     ResponseEntity<BaseResponse<WorkingTimeDTO>> getWorkingTime(@AuthenticationPrincipal Jwt principal,
-                                                                @PathVariable UUID branchId);
+                                                                @PathVariable(name = "branchId") UUID branchId);
 
     @PutMapping("/{branchId}")
     ResponseEntity<BaseResponse<WorkingTimeDTO>> updateWorkingTime(@AuthenticationPrincipal Jwt principal,
                                                                    @RequestBody WorkingTimeDTO workingTimeDTO,
-                                                                   @PathVariable UUID branchId);
+                                                                   @PathVariable(name = "branchId") UUID branchId);
 }

@@ -3,13 +3,10 @@ package com.bigarson.service.impl;
 import com.bigarson.helper.contract.ImageHelper;
 import com.bigarson.model.dto.AccountDTO;
 import com.bigarson.model.dto.BranchDTO;
-import com.bigarson.model.dto.WorkingTimeDTO;
 import com.bigarson.model.entity.Branch;
-import com.bigarson.model.entity.BranchWorkingTime;
 import com.bigarson.model.exception.BranchLimitException;
 import com.bigarson.model.exception.BranchNotFoundException;
 import com.bigarson.repository.BranchRepository;
-import com.bigarson.repository.BranchWorkingTimeRepository;
 import com.bigarson.service.contract.AccountService;
 import com.bigarson.service.contract.BranchService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +25,6 @@ public class BranchServiceImpl implements BranchService {
     private final BranchRepository branchRepository;
     private final AccountService accountService;
     private final ModelMapper modelMapper;
-    private final BranchWorkingTimeRepository workingTimeRepository;
     private final ImageHelper imageHelper;
 
     @Override
@@ -47,7 +43,7 @@ public class BranchServiceImpl implements BranchService {
         Branch branch = modelMapper.map(branchDTO, Branch.class);
         branch.setAccountId(accountId);
         branch = branchRepository.save(branch);
-        if (!Objects.equals(null,branchDTO.getImage())) {
+        if (!Objects.equals(null, branchDTO.getImage())) {
             String imageUrl = imageHelper.upload(branchDTO.getImage(), branch.getId());
             branch.setImageUrl(imageUrl);
             branch = branchRepository.save(branch);
@@ -80,13 +76,6 @@ public class BranchServiceImpl implements BranchService {
     public void delete(UUID userId, UUID branchId) {
         UUID accountId = getAccountIdFromAccountService(userId);
         branchRepository.disableByAccountIdAndId(accountId, branchId);
-    }
-
-    @Override
-    public WorkingTimeDTO createWorkingTime(WorkingTimeDTO workingTimeDTO) {
-        BranchWorkingTime workingTime = modelMapper.map(workingTimeDTO, BranchWorkingTime.class);
-        workingTime = workingTimeRepository.save(workingTime);
-        return modelMapper.map(workingTime, WorkingTimeDTO.class);
     }
 
     private UUID getAccountIdFromAccountService(UUID userId) {

@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface BranchWorkingTimeRepository extends JpaRepository<BranchWorkingTime, UUID> {
     Optional<BranchWorkingTime> findByBranchId(UUID branchId);
+    boolean existsByBranchId(UUID branchId);
 }

@@ -16,12 +16,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WorkingTimeServiceImpl implements WorkingTimeService {
 
-    BranchWorkingTimeRepository workingTimeRepository;
-    ModelMapper modelMapper;
+    private final BranchWorkingTimeRepository workingTimeRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public WorkingTimeDTO createWorkingTime(UUID branchId, WorkingTimeDTO workingTimeDTO) {
-        if (workingTimeRepository.existsById(branchId)) {
+        if (workingTimeRepository.existsByBranchId(branchId)) {
             throw new WorkingTimeAlreadyExistException();
         }
         workingTimeDTO.setBranchId(branchId);
@@ -38,7 +38,9 @@ public class WorkingTimeServiceImpl implements WorkingTimeService {
 
     @Override
     public WorkingTimeDTO updateWorkingTime(UUID branchId, WorkingTimeDTO workingTimeDTO) {
-        BranchWorkingTime workingTime = workingTimeRepository.findById(branchId).orElseThrow(WorkTimeNotFoundException::new);
+        BranchWorkingTime workingTime = workingTimeRepository.findByBranchId(branchId).orElseThrow(WorkTimeNotFoundException::new);
+        workingTimeDTO.setId(workingTime.getId());
+        workingTimeDTO.setBranchId(workingTime.getBranchId());
         modelMapper.map(workingTimeDTO, workingTime);
         workingTime = workingTimeRepository.save(workingTime);
         return modelMapper.map(workingTime, WorkingTimeDTO.class);
