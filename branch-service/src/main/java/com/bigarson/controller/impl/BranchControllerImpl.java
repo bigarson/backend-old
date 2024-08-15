@@ -39,14 +39,15 @@ public class BranchControllerImpl implements BranchController {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BranchDTO>> getByBranchId(UUID id) {
+    public ResponseEntity<BaseResponse<BranchDTO>> getBranchById(UUID id) {
         BranchDTO branchDTO = branchService.getBranchByBranchId(id);
         return BaseResponse.ok(branchDTO, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<BaseResponse<List<BranchDTO>>> getAllBranchList(Jwt principal) {
-        List<BranchDTO> brancList = branchService.getBranchList(UUID.fromString(principal.getSubject()));
+        List<BranchDTO> brancList = branchService.getBranchListByUserId(UUID.fromString(principal.getSubject()));
         return BaseResponse.ok(brancList, HttpStatus.OK);
     }
+
 }

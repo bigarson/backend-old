@@ -1,6 +1,6 @@
 package com.bigarson.model.exception;
 
-public abstract class AlreadyExistException extends RuntimeException{
+public abstract class AlreadyExistException extends RuntimeException {
     public AlreadyExistException(String message) {
         super(message);
     }

@@ -1,7 +1,7 @@
 package com.bigarson.model.exception;
 
-public class BranchLimitException extends RuntimeException{
+public class BranchLimitException extends BadRequestException {
     public BranchLimitException() {
-        super("exception.account.branch-limit");
+        super("exception.branch.limit");
     }
 }

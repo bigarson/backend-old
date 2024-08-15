@@ -2,6 +2,7 @@ package com.bigarson.controller.contract;
 
 import com.bigarson.base.BaseResponse;
 import com.bigarson.model.dto.BranchDTO;
+import com.bigarson.model.dto.WorkingTimeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -34,7 +35,7 @@ public interface BranchController {
                                                      @Valid @PathVariable("id") UUID id);
 
     @GetMapping("/{id}")
-    ResponseEntity<BaseResponse<BranchDTO>> getByBranchId(@Valid @PathVariable("id") UUID id);
+    ResponseEntity<BaseResponse<BranchDTO>> getBranchById(@Valid @PathVariable("id") UUID id);
 
     @GetMapping("/list")
     ResponseEntity<BaseResponse<List<BranchDTO>>> getAllBranchList(@AuthenticationPrincipal Jwt principal);

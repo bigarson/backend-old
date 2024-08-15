@@ -34,7 +34,7 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public BranchDTO getBranchByBranchId(UUID branchId) {
         Branch branch = branchRepository.findById(branchId).orElseThrow(BranchNotFoundException::new);
-        return branchToBranchDto(branch);
+        return modelMapper.map(branch, BranchDTO.class);
     }
 
     @Override
@@ -47,17 +47,12 @@ public class BranchServiceImpl implements BranchService {
         Branch branch = modelMapper.map(branchDTO, Branch.class);
         branch.setAccountId(accountId);
         branch = branchRepository.save(branch);
-        if (!Objects.equals(null,branchDTO.getBranchImage())) {
-            String imageUrl = imageHelper.upload(branchDTO.getBranchImage(), branch.getId());
+        if (!Objects.equals(null,branchDTO.getImage())) {
+            String imageUrl = imageHelper.upload(branchDTO.getImage(), branch.getId());
             branch.setImageUrl(imageUrl);
             branch = branchRepository.save(branch);
         }
-        if (!Objects.equals(branchDTO.getWorkingTime(), null)) {
-            BranchWorkingTime branchWorkingTime = modelMapper.map(branchDTO.getWorkingTime(), BranchWorkingTime.class);
-            branchWorkingTime.setBranch(branch);
-            workingTimeRepository.save(branchWorkingTime);
-        }
-        return branchToBranchDto(branch);
+        return modelMapper.map(branch, BranchDTO.class);
     }
 
     @Override
@@ -67,23 +62,16 @@ public class BranchServiceImpl implements BranchService {
         branch = modelMapper.map(branchUpdateDTO, Branch.class);
         branch.setAccountId(accountId);
         branch = branchRepository.save(branch);
-        if (!Objects.equals(branchUpdateDTO.getWorkingTime(), null)) {
-            BranchWorkingTime branchWorkingTime = workingTimeRepository.findByBranchId(branch.getId()).orElseThrow(WrongThreadException::new);
-            workingTimeRepository.save(branchWorkingTime);
-        }
         return modelMapper.map(branch, BranchDTO.class);
     }
 
     @Override
-    public List<BranchDTO> getBranchList(UUID userId) {
+    public List<BranchDTO> getBranchListByUserId(UUID userId) {
         UUID accountId = getAccountIdFromAccountService(userId);
         List<Branch> branches = branchRepository.findAllByAccountIdAndDeletedTimeIsNull(accountId);
         List<BranchDTO> branchDTOS = new ArrayList<>();
         for (Branch branch : branches) {
-            BranchWorkingTime workingTime = workingTimeRepository.findByBranchId(branch.getId()).orElseThrow(WrongThreadException::new);
-            BranchDTO dto = modelMapper.map(branch, BranchDTO.class);
-            dto.setWorkingTime(modelMapper.map(workingTime, WorkingTimeDTO.class));
-            branchDTOS.add(dto);
+            branchDTOS.add(modelMapper.map(branch, BranchDTO.class));
         }
         return branchDTOS;
     }
@@ -94,15 +82,16 @@ public class BranchServiceImpl implements BranchService {
         branchRepository.disableByAccountIdAndId(accountId, branchId);
     }
 
+    @Override
+    public WorkingTimeDTO createWorkingTime(WorkingTimeDTO workingTimeDTO) {
+        BranchWorkingTime workingTime = modelMapper.map(workingTimeDTO, BranchWorkingTime.class);
+        workingTime = workingTimeRepository.save(workingTime);
+        return modelMapper.map(workingTime, WorkingTimeDTO.class);
+    }
+
     private UUID getAccountIdFromAccountService(UUID userId) {
         AccountDTO accountDTO = accountService.getAccountByUserId(userId);
         return accountDTO.getId();
     }
 
-    private BranchDTO branchToBranchDto(Branch branch) {
-        BranchWorkingTime workingTime = workingTimeRepository.findByBranchId(branch.getId()).orElseThrow(BranchNotFoundException::new);
-        BranchDTO branchDTO = modelMapper.map(branch, BranchDTO.class);
-        branchDTO.setWorkingTime(modelMapper.map(workingTime, WorkingTimeDTO.class));
-        return branchDTO;
-    }
 }
