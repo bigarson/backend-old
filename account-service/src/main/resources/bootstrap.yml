@@ -7,7 +7,7 @@ spring:
       username: bigarson
       password: SfFatyBpfnmVSfW!
 
-#      uri: http://config-server:8888
+      uri: http://config-server:8888
 server:
   ssl:
     key-store: classpath:/bigarson.jks
